@@ -93,7 +93,7 @@ export default function ListagemOrdemServico({ history }) {
           );
 
           setCarro({
-            modelo: response.data.data[0]["vehicle.model"],
+            modelo: response.data.data[0]["vehicle.model.model"],
             placa: response.data.data[0]["vehicle.plate"],
             cor: response.data.data[0]["vehicle.color"],
             quilometragem: response.data.data[0]["vehicle.kilometer"],
@@ -175,110 +175,7 @@ export default function ListagemOrdemServico({ history }) {
     );
   };
 
-  const handlePaid = async (rowData) => {
-    try {
-      const response = await api.put(
-        `/usuario/${rowData.userId}/ordem-servico/${rowData.id}`,
-        {
-          paid: true,
-        }
-      );
-      setAlert({
-        key: new Date().getTime(),
-        open: true,
-        text: "Ordem de serviço alterada para paga com sucesso!",
-        severity: "success",
-      });
-      setTimeout(() => {
-        setLoading(true);
-        setModalConfirm({
-          open: false,
-        });
-      }, 1000);
-    } catch (error) {
-      setAlert({
-        key: new Date().getTime(),
-        open: true,
-        text: "Erro ao atualizar a ordem de serviço!",
-        severity: "error",
-      });
-      setModalConfirm({
-        open: false,
-      });
-    }
-  };
-
-  const handleDone = async (rowData) => {
-    try {
-      const response = await api.put(
-        `/usuario/${rowData.userId}/ordem-servico/${rowData.id}`,
-        {
-          done: true,
-        }
-      );
-      setAlert({
-        key: new Date().getTime(),
-        open: true,
-        text: "Ordem de serviço finalizada com sucesso!",
-        severity: "success",
-      });
-      setTimeout(() => {
-        setLoading(true);
-        setModalConfirm({
-          open: false,
-        });
-      }, 1000);
-    } catch (error) {
-      setAlert({
-        key: new Date().getTime(),
-        open: true,
-        text: "Erro ao atualizar a ordem de serviço!",
-        severity: "error",
-      });
-      setModalConfirm({
-        open: false,
-      });
-    }
-  };
-
-  const confirmPaid = (rowData) => {
-    setModalConfirm({
-      open: true,
-      text: "Deseja confirmar o pagamento do serviço?",
-      handleClick: async () => await handlePaid(rowData),
-    });
-  };
-  const confirmDone = (rowData) => {
-    setModalConfirm({
-      open: true,
-      text: "Deseja confirmar que o serviço foi finalizado?",
-      handleClick: async () => await handleDone(rowData),
-    });
-  };
-
-  const handleAcoes = (rowData) => {
-    const pago = rowData.paid;
-    const finalizado = rowData.done;
-
-    return (
-      <>
-        {pago ? null : (
-          <Tooltip title="Pago">
-            <IconButton onClick={() => confirmPaid(rowData)}>
-              <LocalAtm color="primary" />
-            </IconButton>
-          </Tooltip>
-        )}
-        {finalizado ? null : (
-          <Tooltip title="Finalizado">
-            <IconButton onClick={() => confirmDone(rowData)}>
-              <CheckCircle color="primary" />
-            </IconButton>
-          </Tooltip>
-        )}
-      </>
-    );
-  };
+  const { id } = useAuth();
 
   const [ordemServico, setOrdemServico] = useState([]);
   const [columns, setColumns] = useState([
@@ -330,17 +227,14 @@ export default function ListagemOrdemServico({ history }) {
         </Typography>
       ),
     },
-    {
-      title: "Ações",
-      field: "acoes",
-      render: (rowData) => handleAcoes(rowData),
-    },
   ]);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const responseOrdemServico = await api.get("/ordem-servico");
+        const responseOrdemServico = await api.get(
+          `usuario/${id}/ordem-servico`
+        );
         setOrdemServico(responseOrdemServico.data.data);
         setLoading(false);
       } catch (error) {

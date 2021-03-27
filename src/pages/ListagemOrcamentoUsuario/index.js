@@ -185,7 +185,7 @@ export default function ListagemOrcamentoUsuario({ history }) {
           );
 
           setCarro({
-            modelo: response.data.data[0]["vehicle.model"],
+            modelo: response.data.data[0]["vehicle.model.model"],
             placa: response.data.data[0]["vehicle.plate"],
             cor: response.data.data[0]["vehicle.color"],
             quilometragem: response.data.data[0]["vehicle.kilometer"],

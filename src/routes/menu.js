@@ -105,6 +105,11 @@ export const menus = (role) => {
         link: "/agendar-servico-usuario",
         icon: <ListAlt color="primary" />,
       },
+      {
+        label: "Listagem ordem de serviço",
+        link: "/ordem-servico-usuario",
+        icon: <ListAlt color="primary" />,
+      },
     ]);
   } else {
     routes.push([

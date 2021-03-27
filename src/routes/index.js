@@ -80,6 +80,12 @@ export default function Routes() {
           component={pages.AgendarServicoUsuario}
           roles={["USUARIO"]}
         />
+        <PrivateRoute
+          exact
+          path="/ordem-servico-usuario"
+          component={pages.ListagemOrdemServicoUsuario}
+          roles={["USUARIO"]}
+        />
         {/* OPERADOR/ADM */}
         <PrivateRoute
           exact

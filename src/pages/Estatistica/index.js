@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import Charts from "../../components/core/Charts";
+import BarCharts from "../../components/core/BarCharts";
 import api from "../../services/api";
 
 export default function Estatistica() {
@@ -150,6 +151,10 @@ export default function Estatistica() {
         Ordem serviço
       </Typography>
       <Charts data={ordemServico} />
+      <Typography variant="h6" align="center">
+        Orçamentos por mês
+      </Typography>
+      <BarCharts data={orcamento} />
     </>
   );
 }

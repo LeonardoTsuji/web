@@ -11,6 +11,7 @@ import ListagemAgendamento from "../pages/ListagemAgendamento";
 import Orcamento from "../pages/Orcamento";
 import ListagemOrcamento from "../pages/ListagemOrcamento";
 import ListagemOrcamentoUsuario from "../pages/ListagemOrcamentoUsuario";
+import ListagemOrdemServicoUsuario from "../pages/ListagemOrdemServicoUsuario";
 import OrcamentoUsuario from "../pages/OrcamentoUsuario";
 import OrdemServico from "../pages/OrdemServico";
 import ListagemOrdemServico from "../pages/ListagemOrdemServico";
@@ -35,6 +36,7 @@ export const pages = {
   OrcamentoUsuario,
   ListagemOrcamento,
   ListagemOrcamentoUsuario,
+  ListagemOrdemServicoUsuario,
   OrdemServico,
   ListagemOrdemServico,
   ServicosMecanicos,
