@@ -384,25 +384,6 @@ export default function OrdemServico(props) {
                           </Select>
                         </FormControl>
                       </Grid>
-                      {/* <Grid item xs={12} sm={12} md={3} lg={3}>
-                        <TextField
-                          name="descricao"
-                          title="Descrição"
-                          label="Descrição"
-                          variant="outlined"
-                          fullWidth
-                          type="text"
-                          shrink="true"
-                          value={itemOrcamento.descricao}
-                          onChange={(e) =>
-                            setScheduleItemValue(
-                              index,
-                              "descricao",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </Grid> */}
                       <Grid item xs={12} sm={12} md={1} lg={1}>
                         <TextField
                           name="valorUnitario"

@@ -2,9 +2,12 @@ import Login from "../pages/Login";
 import LoginFacebook from "../pages/LoginFacebook";
 import Dashboard from "../pages/Dashboard";
 import CadastrarSenha from "../pages/CadastrarSenha";
+import AlterarSenha from "../pages/AlterarSenha";
+import EsqueciSenha from "../pages/EsqueciSenha";
 import Page404 from "../pages/Page404";
 import Home from "../pages/Home";
 import CadastrarOperador from "../pages/CadastrarOperador";
+import ListagemOperador from "../pages/ListagemOperador";
 import AgendarServico from "../pages/AgendarServico";
 import AgendarServicoUsuario from "../pages/AgendarServicoUsuario";
 import ListagemAgendamento from "../pages/ListagemAgendamento";
@@ -29,6 +32,9 @@ export const pages = {
   Dashboard,
   CadastrarSenha,
   CadastrarOperador,
+  AlterarSenha,
+  EsqueciSenha,
+  ListagemOperador,
   AgendarServico,
   AgendarServicoUsuario,
   ListagemAgendamento,

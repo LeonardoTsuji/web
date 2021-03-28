@@ -234,45 +234,11 @@ export default function Agendamentoservico(props) {
                     return;
                   }}
                 />
-                {/* <Select
-                  labelId="fabricanteArray"
-                  value={selectedFabricante}
-                  fullWidth
-                  onChange={(e) => handleFabricanteChange(e.target.value)}
-                  label="Fabricante"
-                  displayEmpty
-                >
-                  {fabricanteArray &&
-                    fabricanteArray.map((fabricante) => {
-                      return (
-                        <MenuItem key={fabricante.id} value={fabricante.id}>
-                          {fabricante.name}
-                        </MenuItem>
-                      );
-                    })}
-                </Select> */}
               </FormControl>
               <FormControl margin="normal" variant="outlined" fullWidth>
                 <InputLabel shrink="true" id="veiculo">
                   Veículo
                 </InputLabel>
-                {/* <Select
-                  labelId="veiculoArray"
-                  value={selectedVeiculo}
-                  fullWidth
-                  onChange={(e) => setSelectedVeiculo(e.target.value)}
-                  label="Veículo"
-                  displayEmpty
-                >
-                  {veiculoArray &&
-                    veiculoArray.map((veiculo) => {
-                      return (
-                        <MenuItem key={veiculo.id} value={veiculo.id}>
-                          {veiculo.model}
-                        </MenuItem>
-                      );
-                    })}
-                </Select> */}
                 <Autocomplete
                   options={veiculoArray}
                   getOptionLabel={(option) => option.model}

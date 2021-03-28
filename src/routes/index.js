@@ -42,6 +42,8 @@ export default function Routes() {
         <Route path="/login" component={pages.Login} />
         <Route path="/auth/facebook" component={pages.LoginFacebook} />
         <Route path="/cadastrar-senha" component={pages.CadastrarSenha} />
+        <Route path="/alterar-senha" component={pages.AlterarSenha} />
+        <Route path="/esqueci-senha" component={pages.EsqueciSenha} />
         <Route
           exact
           path="/"
@@ -155,6 +157,12 @@ export default function Routes() {
           exact
           path="/operador"
           component={pages.CadastrarOperador}
+          roles={["ADM"]}
+        />
+        <PrivateRoute
+          exact
+          path="/operador/listagem"
+          component={pages.ListagemOperador}
           roles={["ADM"]}
         />
         <Route

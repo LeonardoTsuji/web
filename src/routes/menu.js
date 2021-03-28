@@ -11,7 +11,8 @@ import {
   Event,
   Assignment,
   List,
-  Person,
+  PersonAdd,
+  PeopleAlt,
 } from "@material-ui/icons";
 
 export const menus = (role) => {
@@ -27,7 +28,12 @@ export const menus = (role) => {
       {
         label: "Cadastrar operador",
         link: "/operador",
-        icon: <Person color="primary" />,
+        icon: <PersonAdd color="primary" />,
+      },
+      {
+        label: "Listagem operador",
+        link: "/operador/listagem",
+        icon: <PeopleAlt color="primary" />,
       },
       {
         label: "Fabricante",

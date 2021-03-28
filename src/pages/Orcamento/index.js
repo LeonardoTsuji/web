@@ -438,29 +438,6 @@ export default function Orcamento(props) {
                               return;
                             }}
                           />
-                          {/* <Select
-                            labelId="fabricante"
-                            value={itemOrcamento.fabricante}
-                            fullWidth
-                            onChange={(e) =>
-                              setScheduleItemValue(
-                                index,
-                                "fabricante",
-                                e.target.value
-                              )
-                            }
-                            displayEmpty
-                          >
-                            <MenuItem value="" disabled>
-                              <em>Selecione uma opção</em>
-                            </MenuItem>
-                            {fabricanteArray &&
-                              fabricanteArray.map((fab) => (
-                                <MenuItem key={fab.id} value={fab.id}>
-                                  {fab.name}
-                                </MenuItem>
-                              ))}
-                          </Select> */}
                         </FormControl>
                       </Grid>
                       <Grid item xs={12} sm={12} md={4} lg={3}>
@@ -485,25 +462,6 @@ export default function Orcamento(props) {
                               return;
                             }}
                           />
-                          {/* <Select
-                            labelId="categoria"
-                            value={itemOrcamento.categoria}
-                            fullWidth
-                            onChange={(e) =>
-                              handleCategoria(index, e.target.value)
-                            }
-                            displayEmpty
-                          >
-                            <MenuItem value="" disabled>
-                              <em>Selecione uma opção</em>
-                            </MenuItem>
-                            {categoriaArray &&
-                              categoriaArray.map((fab) => (
-                                <MenuItem key={fab.id} value={fab.id}>
-                                  {fab.name}
-                                </MenuItem>
-                              ))}
-                          </Select> */}
                         </FormControl>
                       </Grid>
                       <Grid item xs={12} sm={12} md={4} lg={2}>
@@ -528,46 +486,8 @@ export default function Orcamento(props) {
                               return;
                             }}
                           />
-                          {/* <Select
-                            labelId="produto"
-                            value={itemOrcamento.produto}
-                            fullWidth
-                            onChange={(e) =>
-                              handleProduto(index, e.target.value)
-                            }
-                            displayEmpty
-                          >
-                            <MenuItem value="" disabled>
-                              <em>Selecione uma opção</em>
-                            </MenuItem>
-                            {itemOrcamento.produtoArray &&
-                              itemOrcamento.produtoArray.map((fab) => (
-                                <MenuItem key={fab.id} value={fab.id}>
-                                  {fab.name}
-                                </MenuItem>
-                              ))}
-                          </Select> */}
                         </FormControl>
                       </Grid>
-                      {/* <Grid item xs={12} sm={12} md={3} lg={3}>
-                        <TextField
-                          name="descricao"
-                          title="Descrição"
-                          label="Descrição"
-                          variant="outlined"
-                          fullWidth
-                          type="text"
-                          shrink="true"
-                          value={itemOrcamento.descricao}
-                          onChange={(e) =>
-                            setScheduleItemValue(
-                              index,
-                              "descricao",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </Grid> */}
                       <Grid item xs={12} sm={12} md={4} lg={1}>
                         <TextField
                           name="valorUnitario"

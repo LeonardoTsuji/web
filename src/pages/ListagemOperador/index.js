@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import { CircularIndeterminate } from "../../components/core/Feedback/Progress";
 import Dialog from "../../components/core/Feedback/Dialog";
 import DialogConfirm from "../../components/core/Feedback/DialogConfirm";
@@ -10,7 +14,12 @@ import api from "../../services/api";
 import { retornaObj } from "../../utils/utils";
 import { Container } from "./styles";
 
-export default function Produto(props) {
+const handleColor = (active) => {
+  if (active) return "blue";
+  return "red";
+};
+
+export default function ListagemOperador(props) {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState({ open: false, text: "" });
   const [modalConfirm, setModalConfirm] = useState({ open: false, text: "" });
@@ -20,70 +29,80 @@ export default function Produto(props) {
     severity: "success",
     key: 0,
   });
-  const [produto, setProduto] = useState([]);
+  const [operador, setOperador] = useState([]);
   const [columns, setColumns] = useState([]);
   const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const responseProdutos = await api.get("/produto");
-        const responseCategorias = await api.get("/categoria");
-        const responseFabricantes = await api.get("/fabricante");
-
+        const responseRole = await api.get("/regra");
+        const responseRoleOperador = await api.get("/regra", {
+          params: {
+            name: "OPERADOR",
+          },
+        });
+        const responseOperador = await api.get("/usuario", {
+          params: {
+            role: responseRoleOperador.data.data.id,
+          },
+        });
+        setOperador(responseOperador.data.data);
         setColumns([
-          { title: "id", field: "id", title: "Nome", field: "name" },
-          { title: "Descrição", field: "description" },
-          { title: "Preço", field: "price", type: "numeric" },
+          { title: "id", field: "id", editable: "never" },
+          { title: "Nome", field: "name" },
+          { title: "email", field: "email" },
+          { title: "celular", field: "phone" },
           {
-            title: "Fabricante",
-            field: "brandId",
+            title: "Regra",
+            field: "roleId",
             editComponent: (props) => (
-              <Autocomplete
-                options={responseFabricantes.data.data}
-                getOptionLabel={(option) => option.name}
-                onChange={(e, newValue) => props.onChange(newValue.id)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Fabricante"
-                    variant="outlined"
-                    required
-                  />
-                )}
-              />
+              <Select
+                label="Regra"
+                variant="outlined"
+                value={responseRoleOperador.data.data.id}
+                fullWidth
+                disabled
+              >
+                <MenuItem
+                  key={responseRoleOperador.data.data.id}
+                  value={responseRoleOperador.data.data.id}
+                >
+                  {responseRoleOperador.data.data.name}
+                </MenuItem>
+              </Select>
             ),
-            lookup: retornaObj(responseFabricantes.data.data),
+            lookup: retornaObj(responseRole.data.data, "id", "name"),
           },
           {
-            title: "Categoria",
-            field: "categoryId",
-            editComponent: (props) => (
-              <Autocomplete
-                options={responseCategorias.data.data}
-                getOptionLabel={(option) => option.name}
-                onChange={(e, newValue) => props.onChange(newValue.id)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Categoria"
-                    variant="outlined"
-                    required
-                  />
-                )}
-              />
+            title: "ativo",
+            field: "active",
+            render: (rowData) => (
+              <Select
+                label="Regra"
+                variant="outlined"
+                value={rowData.active}
+                fullWidth
+                disabled
+              >
+                <MenuItem key={true} value={true}>
+                  Ativo
+                </MenuItem>
+                <MenuItem key={false} value={false}>
+                  Inativo
+                </MenuItem>
+              </Select>
             ),
-            lookup: retornaObj(responseCategorias.data.data),
+            lookup: { true: "Ativo", false: "Inativo" },
           },
         ]);
-        setProduto(responseProdutos.data.data);
         setLoading(false);
       } catch (error) {
         setModal({
           open: true,
           text:
             error.response?.data?.message ||
-            "Não foi possível carregar os produtos",
+            "Não foi possível carregar os operadores",
           success: false,
         });
         setLoading(false);
@@ -105,27 +124,29 @@ export default function Produto(props) {
       open: false,
     });
     try {
-      const promisesDeletedProduto = selected.map(async (row) => {
-        await api.delete(`/produto/${row.id}`);
+      const promisesDeletedFabricante = selected.map(async (row) => {
+        await api.delete(`/usuario/${row.id}`);
       });
 
-      Promise.all(await promisesDeletedProduto)
+      Promise.all(await promisesDeletedFabricante)
         .then(() => {
           setAlert({
             key: new Date().getTime(),
             open: true,
-            text: "Produtos excluídos com sucesso!",
+            text: "Operadores excluídos com sucesso!",
             severity: "success",
           });
           setTimeout(() => {
             setLoading(true);
           }, 1000);
         })
-        .catch(() => {
+        .catch((error) => {
           setAlert({
             key: new Date().getTime(),
             open: true,
-            text: "Não foi possível excluir os produtos!",
+            text:
+              error.response?.data?.message ||
+              "Não foi possível excluir os operadores!",
             severity: "error",
           });
         });
@@ -133,7 +154,9 @@ export default function Produto(props) {
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Não foi possível excluir os produtos!",
+        text:
+          error.response?.data?.message ||
+          "Não foi possível excluir os operadores!",
         severity: "error",
       });
     }
@@ -141,11 +164,11 @@ export default function Produto(props) {
 
   const handleDelete = async (oldData) => {
     try {
-      const response = await api.delete(`/produto/${oldData.id}`);
+      const response = await api.delete(`/usuario/${oldData.id}`);
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Produto excluído com sucesso!",
+        text: "Operador excluído com sucesso!",
         severity: "success",
       });
       setTimeout(() => {
@@ -155,59 +178,33 @@ export default function Produto(props) {
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Erro ao excluir o produto!",
-        severity: "error",
-      });
-    }
-  };
-
-  const handleAdd = async (newData) => {
-    try {
-      const response = await api.post("/produto", {
-        name: newData.name,
-        description: newData.description,
-        price: newData.price,
-        brandId: newData.brandId,
-        categoryId: newData.categoryId,
-      });
-      setAlert({
-        key: new Date().getTime(),
-        open: true,
-        text: "Produto criado com sucesso!",
-        severity: "success",
-      });
-      setTimeout(() => {
-        setLoading(true);
-      }, 1000);
-    } catch (error) {
-      setAlert({
-        key: new Date().getTime(),
-        open: true,
-        text: "Erro ao cadastrar o produto!",
+        text: error.response?.data?.message || "Erro ao excluir o operador!",
         severity: "error",
       });
     }
   };
 
   const handleUpdate = async (newData, oldData) => {
+    console.log(oldData);
     try {
-      await api.put(`/produto/${oldData.id}`, {
+      await api.put(`/usuario/${oldData.id}`, {
         ...newData,
       });
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Produto atualizado com sucesso!",
+        text: "Operador atualizado com sucesso!",
         severity: "success",
       });
       setTimeout(() => {
         setLoading(true);
       }, 1000);
     } catch (error) {
+      console.log(error);
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Erro ao atualizar o produto!",
+        text: error.response?.data?.message || "Erro ao atualizar o operador!",
         severity: "error",
       });
     }
@@ -220,12 +217,13 @@ export default function Produto(props) {
       <Grid container spacing={0}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Table
-            title="Listagem de produtos"
+            title="Listagem de operadores"
             columns={columns}
             isLoading={loading}
-            data={produto}
+            data={operador}
             handleSelectedDelete={({ rowData }) => handleConfirm(rowData)}
-            onRowAdd={({ newData }) => handleAdd(newData)}
+            editable={false}
+            onRowAdd={null}
             onRowDelete={({ oldData }) => handleDelete(oldData)}
             onRowUpdate={({ newData, oldData }) =>
               handleUpdate(newData, oldData)

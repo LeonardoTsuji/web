@@ -93,9 +93,15 @@ export default function TableCRUD(props) {
             editable={
               props.editable === false
                 ? {
-                    onRowAdd: null,
-                    onRowUpdate: null,
-                    onRowDelete: null,
+                    onRowAdd: props.onRowAdd
+                      ? (newData) => handleAdd(newData)
+                      : null,
+                    onRowUpdate: props.onRowUpdate
+                      ? (newData, oldData) => handleUpdate(newData, oldData)
+                      : null,
+                    onRowDelete: props.onRowDelete
+                      ? (oldData) => handleDelete(oldData)
+                      : null,
                   }
                 : {
                     onRowAdd: (newData) => handleAdd(newData),

@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Dialog from "../../components/core/Feedback/Dialog";
+import { Facebook } from "@material-ui/icons";
 import api from "../../services/api";
 import facebookLoginUrl from "../../services/facebook";
 import urlParams from "../../services/facebook-code";
@@ -116,14 +117,6 @@ export default function Login({ history }) {
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Button
-                      color="secondary"
-                      onClick={() => history.push("/cadastrar-senha")}
-                    >
-                      Ainda não tem uma conta? Criar
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Button
                       style={{
                         backgroundColor: "#1877f2",
                         color: "#fff",
@@ -131,7 +124,29 @@ export default function Login({ history }) {
                       }}
                       onClick={() => handleLoginFacebook()}
                     >
-                      Login com Facebook
+                      <Facebook style={{ paddingRight: 5 }} /> Login com
+                      Facebook
+                    </Button>
+                  </Grid>
+                  <Grid
+                    container
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    justify="space-between"
+                  >
+                    <Button
+                      color="secondary"
+                      onClick={() => history.push("/cadastrar-senha")}
+                    >
+                      Ainda não tem uma conta? Criar
+                    </Button>
+                    <Button
+                      color="secondary"
+                      onClick={() => history.push("/esqueci-senha")}
+                    >
+                      Esqueceu sua senha?
                     </Button>
                   </Grid>
                 </Grid>
