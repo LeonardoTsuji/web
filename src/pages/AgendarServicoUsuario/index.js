@@ -41,8 +41,8 @@ import {
 
 const handleColor = (status) => {
   if (status === "CANCELADO") return "red";
-  else if (status === "PENDENTE") return "orange";
-  else if (status === "APROVADO") return "green";
+  else if (status === "ATIVO") return "blue";
+  else if (status === "FINALIZADO") return "green";
   return "yellow";
 };
 

@@ -45,6 +45,7 @@ const handleColor = (status) => {
   if (status === "RECUSADO") return "red";
   else if (status === "PENDENTE") return "orange";
   else if (status === "APROVADO") return "green";
+  else if (status === "FINALIZADO") return "blue";
   return "yellow";
 };
 

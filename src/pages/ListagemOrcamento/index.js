@@ -45,6 +45,7 @@ const handleColor = (status) => {
   if (status === "RECUSADO") return "red";
   else if (status === "PENDENTE") return "orange";
   else if (status === "APROVADO") return "green";
+  else if (status === "FINALIZADO") return "blue";
   return "yellow";
 };
 
@@ -68,6 +69,7 @@ export default function ListagemOrcamento({ history }) {
     open: false,
     text: "",
     severity: "success",
+    key: 0,
   });
 
   const [formaPagamento, setFormaPagamento] = useState("dinheiro");
@@ -80,6 +82,7 @@ export default function ListagemOrcamento({ history }) {
         open: true,
         text: "Orçamento cancelado com sucesso!",
         severity: "success",
+        key: new Date().getTime(),
       });
       setTimeout(() => {
         setLoading(true);
@@ -92,6 +95,7 @@ export default function ListagemOrcamento({ history }) {
         open: true,
         text: "Erro ao cancelar o orçamento!",
         severity: "error",
+        key: new Date().getTime(),
       });
       setModalConfirm({
         open: false,
@@ -112,6 +116,7 @@ export default function ListagemOrcamento({ history }) {
         open: true,
         text: "Orçamento aprovado com sucesso!",
         severity: "success",
+        key: new Date().getTime(),
       });
       setTimeout(() => {
         setLoading(true);
@@ -124,6 +129,7 @@ export default function ListagemOrcamento({ history }) {
         open: true,
         text: "Erro ao cancelar o orçamento!",
         severity: "error",
+        key: new Date().getTime(),
       });
       setModalConfirm({
         open: false,
@@ -180,7 +186,7 @@ export default function ListagemOrcamento({ history }) {
           );
 
           setCarro({
-            modelo: response.data.data[0]["vehicle.model"],
+            modelo: response.data.data[0]["vehicle.model.model"],
             placa: response.data.data[0]["vehicle.plate"],
             cor: response.data.data[0]["vehicle.color"],
             quilometragem: response.data.data[0]["vehicle.kilometer"],
@@ -369,6 +375,7 @@ export default function ListagemOrcamento({ history }) {
             open: true,
             text: "Orçamentos excluídos com sucesso!",
             severity: "success",
+            key: new Date().getTime(),
           });
           setTimeout(() => {
             setLoading(true);
@@ -379,6 +386,7 @@ export default function ListagemOrcamento({ history }) {
             open: true,
             text: "Não foi possível excluir os orçamentos!",
             severity: "error",
+            key: new Date().getTime(),
           });
         });
     } catch (err) {
@@ -386,6 +394,7 @@ export default function ListagemOrcamento({ history }) {
         open: true,
         text: "Não foi possível excluir os orçamentos!",
         severity: "error",
+        key: new Date().getTime(),
       });
     }
   };
@@ -409,6 +418,7 @@ export default function ListagemOrcamento({ history }) {
             alertOpen={alert.open}
             alertText={alert.text}
             alertSeverity={alert.severity}
+            key={alert.key}
           />
         </Grid>
       </Grid>

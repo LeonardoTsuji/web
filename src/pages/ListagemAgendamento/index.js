@@ -42,9 +42,9 @@ import {
 } from "./styles";
 
 const handleColor = (status) => {
-  if (status === "RECUSADO") return "red";
-  else if (status === "PENDENTE") return "orange";
-  else if (status === "APROVADO") return "green";
+  if (status === "CANCELADO") return "red";
+  else if (status === "ATIVO") return "blue";
+  else if (status === "FINALIZADO") return "green";
   return "yellow";
 };
 
@@ -180,7 +180,7 @@ export default function AgendarServicoUsuario({ history }) {
           );
 
           setCarro({
-            modelo: response.data.data[0]["vehicle.model"],
+            modelo: response.data.data[0]["vehicle.model.model"],
             placa: response.data.data[0]["vehicle.plate"],
             cor: response.data.data[0]["vehicle.color"],
             quilometragem: response.data.data[0]["vehicle.kilometer"],

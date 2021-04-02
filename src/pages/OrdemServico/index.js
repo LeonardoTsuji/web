@@ -119,6 +119,7 @@ export default function OrdemServico(props) {
         userId: usuarioId,
         userVehicleId: carro.id,
         products: itemsOrcamento,
+        bugdetId: selectedOrcamento,
       });
 
       setAlert({
@@ -450,12 +451,12 @@ export default function OrdemServico(props) {
                         <FormControlLabel
                           value="sim"
                           control={<Radio />}
-                          label="SIM"
+                          label="Sim"
                         />
                         <FormControlLabel
                           value="nao"
                           control={<Radio />}
-                          label="NAO"
+                          label="Não"
                         />
                       </RadioGroup>
                     </FormControl>

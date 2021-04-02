@@ -5,12 +5,14 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Card from "../../components/core/Surfaces/Card";
 import Typography from "@material-ui/core/Typography";
+import { Build } from "@material-ui/icons";
 import api from "../../services/api";
 import {
   Container,
   Wallpaper,
   ContainerTitle,
   ContainerSubtitle,
+  CardHeader,
 } from "./styles";
 import wallpaper from "../../assets/images/car.jpg";
 
@@ -45,21 +47,38 @@ export default function Home({ history }) {
       <Grid container>
         <Wallpaper src={wallpaper}>
           <ContainerTitle>
-            <Typography style={{ color: "#fff" }} variant="h1">
+            <Typography
+              style={{ color: "#fff", fontSize: "4rem" }}
+              variant="h1"
+            >
               Premium Car
             </Typography>
           </ContainerTitle>
         </Wallpaper>
       </Grid>
-      <Grid container justify="center">
+      <Grid container justify="center" alignItems="center">
         <ContainerSubtitle>
-          <Typography variant="h6">SERVIÇOS</Typography>
+          <Typography variant="h4" style={{ fontWeight: 700 }}>
+            SERVIÇOS
+          </Typography>
         </ContainerSubtitle>
         <Container>
-          {servicos &&
-            servicos.map((servico) => (
-              <Card title={servico.name} text={servico.description} />
-            ))}
+          <Grid container>
+            {servicos &&
+              servicos.map((servico) => (
+                <Grid item xs={12} sm={12} md={4} lg={4}>
+                  <Card
+                    title={
+                      <CardHeader>
+                        <Build style={{ paddingBottom: 15, paddingTop: 15 }} />
+                        {servico.name}
+                      </CardHeader>
+                    }
+                    text={servico.description}
+                  />
+                </Grid>
+              ))}
+          </Grid>
         </Container>
       </Grid>
       <Grid

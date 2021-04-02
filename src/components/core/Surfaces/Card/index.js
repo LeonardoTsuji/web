@@ -10,7 +10,13 @@ export default function CardComponent(props) {
 
   return (
     <Card className={classes.root}>
-      <CardHeader title={title} subheader={subheader} />
+      <CardHeader
+        title={title}
+        subheader={subheader}
+        style={{
+          textAlign: "center",
+        }}
+      />
       <CardContent>{text}</CardContent>
     </Card>
   );

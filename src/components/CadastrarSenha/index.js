@@ -24,7 +24,7 @@ import {
 } from "./styles";
 import wallpaper from "../../assets/images/logo.jpg";
 
-export default function CadastrarSenha({ history, location, role }) {
+export default function CadastrarSenha({ history, location, role, title }) {
   const [state, setState] = useState({
     loading: false,
     success: false,
@@ -61,6 +61,8 @@ export default function CadastrarSenha({ history, location, role }) {
       setSenha({ ...senha, erro: true });
       setConfirmaSenha({ ...confirmaSenha, erro: true });
     } else {
+      setSenha({ ...senha, erro: false });
+      setConfirmaSenha({ ...confirmaSenha, erro: false });
       try {
         const responseRole = await api.get("/regra", {
           params: {
@@ -112,7 +114,7 @@ export default function CadastrarSenha({ history, location, role }) {
           <LoginBody>
             <ContainerTitle>
               <Typography component="h1" variant="h4">
-                Cadastrar senha
+                {title || "Cadastrar conta"}
               </Typography>
             </ContainerTitle>
             <form onSubmit={onSubmit}>

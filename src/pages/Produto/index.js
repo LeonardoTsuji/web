@@ -33,7 +33,6 @@ export default function Produto(props) {
 
         setColumns([
           { title: "id", field: "id", title: "Nome", field: "name" },
-          { title: "Descrição", field: "description" },
           { title: "Preço", field: "price", type: "numeric" },
           {
             title: "Fabricante",
@@ -53,7 +52,7 @@ export default function Produto(props) {
                 )}
               />
             ),
-            lookup: retornaObj(responseFabricantes.data.data),
+            lookup: retornaObj(responseFabricantes.data.data, "id", "name"),
           },
           {
             title: "Categoria",
@@ -73,7 +72,7 @@ export default function Produto(props) {
                 )}
               />
             ),
-            lookup: retornaObj(responseCategorias.data.data),
+            lookup: retornaObj(responseCategorias.data.data, "id", "name"),
           },
         ]);
         setProduto(responseProdutos.data.data);
@@ -183,7 +182,7 @@ export default function Produto(props) {
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Erro ao cadastrar o produto!",
+        text: error.response?.data?.message || "Erro ao cadastrar o produto!",
         severity: "error",
       });
     }
@@ -207,7 +206,7 @@ export default function Produto(props) {
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Erro ao atualizar o produto!",
+        text: error.response?.data?.message || "Erro ao atualizar o produto!",
         severity: "error",
       });
     }

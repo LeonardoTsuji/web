@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import Divider from "@material-ui/core/Divider";
 import Dialog from "../../components/core/Feedback/Dialog";
 import { Facebook } from "@material-ui/icons";
 import api from "../../services/api";
@@ -44,7 +44,7 @@ export default function Login({ history }) {
         if (responserRole.status === 200) {
           setAuthTokens(response.data.metadata.token);
           setRole(responserRole.data.data.name);
-          setId(responserRole.data.data.id);
+          setId(response.data.data.id);
           history.push("/dashboard");
         } else {
           setModal({
@@ -116,37 +116,50 @@ export default function Login({ history }) {
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12}>
-                    <Button
-                      style={{
-                        backgroundColor: "#1877f2",
-                        color: "#fff",
-                        fontWeight: "bold",
-                      }}
-                      onClick={() => handleLoginFacebook()}
+                    <Grid
+                      container
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      justify="space-between"
                     >
-                      <Facebook style={{ paddingRight: 5 }} /> Login com
-                      Facebook
-                    </Button>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        onClick={() => history.push("/cadastrar-senha")}
+                      >
+                        Criar uma conta
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        onClick={() => history.push("/esqueci-senha")}
+                      >
+                        Esqueceu sua senha?
+                      </Button>
+                    </Grid>
                   </Grid>
                   <Grid
-                    container
+                    item
                     xs={12}
                     sm={12}
                     md={12}
                     lg={12}
-                    justify="space-between"
+                    style={{ textAlign: "center" }}
                   >
+                    <br />
+                    <Divider variant="middle" />
+                    <br />
                     <Button
-                      color="secondary"
-                      onClick={() => history.push("/cadastrar-senha")}
+                      style={{
+                        backgroundColor: "#1877f2",
+                        color: "#fff",
+                      }}
+                      onClick={() => handleLoginFacebook()}
                     >
-                      Ainda não tem uma conta? Criar
-                    </Button>
-                    <Button
-                      color="secondary"
-                      onClick={() => history.push("/esqueci-senha")}
-                    >
-                      Esqueceu sua senha?
+                      <Facebook style={{ paddingRight: 5 }} /> Continuar com
+                      Facebook
                     </Button>
                   </Grid>
                 </Grid>

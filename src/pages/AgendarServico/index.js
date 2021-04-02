@@ -130,10 +130,9 @@ export default function Agendamentoservico(props) {
         modelId: selectedVeiculo,
       });
 
-      const responseAgendamento = api.post(`/agenda`, {
+      await api.post(`/agenda`, {
         userId: id,
         dateSchedule: selectedDateFormated,
-        hourSchedule: "09:00",
         vehicleId: response.data.data.id,
       });
 
@@ -141,7 +140,7 @@ export default function Agendamentoservico(props) {
         open: true,
         text: "Agendamento realizado com sucesso!",
         severity: "success",
-        alert: new Date().getTime(),
+        key: new Date().getTime(),
       });
     } catch (err) {
       setModal({
@@ -153,7 +152,7 @@ export default function Agendamentoservico(props) {
         open: true,
         text: "Erro ao realizar agendamento!",
         severity: "error",
-        alert: new Date().getTime(),
+        key: new Date().getTime(),
       });
     }
   };
@@ -215,7 +214,7 @@ export default function Agendamentoservico(props) {
                 <Typography variant="h6">Dados do veículo</Typography>
               </TitleForm>
               <FormControl margin="normal" variant="outlined" fullWidth>
-                <InputLabel shrink="true" id="fabricante">
+                <InputLabel shrink id="fabricante">
                   Fabricante
                 </InputLabel>
                 <Autocomplete
@@ -236,7 +235,7 @@ export default function Agendamentoservico(props) {
                 />
               </FormControl>
               <FormControl margin="normal" variant="outlined" fullWidth>
-                <InputLabel shrink="true" id="veiculo">
+                <InputLabel shrink id="veiculo">
                   Veículo
                 </InputLabel>
                 <Autocomplete

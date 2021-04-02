@@ -142,6 +142,11 @@ export default function Routes() {
           roles={["ADM"]}
         />
         <PrivateRoute
+          path="/modelo-veiculo"
+          component={pages.Modelo}
+          roles={["ADM"]}
+        />
+        <PrivateRoute
           exact
           path="/estatisticas"
           component={pages.Estatistica}

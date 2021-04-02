@@ -101,7 +101,7 @@ export default function ServicosMecanicos(props) {
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Categoria excluído com sucesso!",
+        text: "Categoria excluída com sucesso!",
         severity: "success",
       });
       setTimeout(() => {

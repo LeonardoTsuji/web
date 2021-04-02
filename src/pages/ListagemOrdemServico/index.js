@@ -93,7 +93,7 @@ export default function ListagemOrdemServico({ history }) {
           );
 
           setCarro({
-            modelo: response.data.data[0]["vehicle.model"],
+            modelo: response.data.data[0]["vehicle.model.model"],
             placa: response.data.data[0]["vehicle.plate"],
             cor: response.data.data[0]["vehicle.color"],
             quilometragem: response.data.data[0]["vehicle.kilometer"],
@@ -263,18 +263,25 @@ export default function ListagemOrdemServico({ history }) {
     return (
       <>
         {pago ? null : (
-          <Tooltip title="Pago">
-            <IconButton onClick={() => confirmPaid(rowData)}>
-              <LocalAtm color="primary" />
-            </IconButton>
-          </Tooltip>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => confirmPaid(rowData)}
+            startIcon={<LocalAtm />}
+            style={{ marginRight: 5 }}
+          >
+            Pago
+          </Button>
         )}
         {finalizado ? null : (
-          <Tooltip title="Finalizado">
-            <IconButton onClick={() => confirmDone(rowData)}>
-              <CheckCircle color="primary" />
-            </IconButton>
-          </Tooltip>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => confirmDone(rowData)}
+            startIcon={<CheckCircle />}
+          >
+            Finalizado
+          </Button>
         )}
       </>
     );

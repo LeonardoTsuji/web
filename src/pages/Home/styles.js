@@ -7,7 +7,7 @@ export const Container = styled.div`
   justify-content: space-around;
   flex: 1;
   margin: 0 auto;
-  background: #f1f1f1;
+  background: #f5f6f6;
   padding-bottom: 65px;
 `;
 
@@ -23,8 +23,8 @@ export const ContainerTitle = styled.div`
 export const ContainerSubtitle = styled.div`
   height: 100%;
   width: 100%;
-  text-align: start;
-  background: #f1f1f1;
+  text-align: center;
+  background: #f5f6f6;
   padding: 20px;
 `;
 
@@ -34,4 +34,11 @@ export const Wallpaper = styled.div`
   background-image: url(${(props) => props.src});
   background-position: center;
   background-size: cover;
+`;
+
+export const CardHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;

@@ -48,6 +48,11 @@ export const menus = (role) => {
       {
         label: "Produto",
         link: "/produto",
+        icon: <List color="primary" />,
+      },
+      {
+        label: "Modelo de veículo",
+        link: "/modelo-veiculo",
         icon: <DriveEta color="primary" />,
       },
       {
@@ -97,11 +102,6 @@ export const menus = (role) => {
         icon: <Home color="primary" />,
       },
       {
-        label: "Orçamento",
-        link: "/orcamento-usuario",
-        icon: <AccountBalanceWallet color="primary" />,
-      },
-      {
         label: "Agendar orçamento",
         link: "/agendar-servico",
         icon: <Event color="primary" />,
@@ -110,6 +110,11 @@ export const menus = (role) => {
         label: "Listagem agendamento",
         link: "/agendar-servico-usuario",
         icon: <ListAlt color="primary" />,
+      },
+      {
+        label: "Listagem orçamento",
+        link: "/orcamento-usuario",
+        icon: <AccountBalanceWallet color="primary" />,
       },
       {
         label: "Listagem ordem de serviço",

@@ -282,24 +282,37 @@ export default function Orcamento(props) {
                       <InputLabel shrink="true" id="agendamento">
                         Agendamento
                       </InputLabel>
-                      <Select
-                        labelId="agendamento"
-                        value={selectedAgendamento}
-                        fullWidth
-                        onChange={(e) => handleAgenda(e.target.value)}
-                        label="Agendamento"
-                        displayEmpty
-                      >
-                        <MenuItem value="" disabled>
-                          <em>Selecione uma opção</em>
-                        </MenuItem>
-                        {agendamento &&
-                          agendamento.map((fab) => (
-                            <MenuItem key={fab.id} value={fab.id}>
-                              {fab.dateSchedule}
-                            </MenuItem>
-                          ))}
-                      </Select>
+                      <Autocomplete
+                        options={agendamento}
+                        getOptionLabel={(option) =>
+                          `${option.dateSchedule} - ${option["vehicle.user.name"]}`
+                        }
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Agendamento"
+                            variant="outlined"
+                            required
+                          />
+                        )}
+                        onChange={(e, newValue) => {
+                          if (newValue) handleAgenda(newValue.id);
+                          else {
+                            setSelectedAgendamento("");
+                            setCarro({
+                              modelo: "",
+                              placa: "",
+                              cor: "",
+                              quilometragem: "",
+                              ano: "",
+                              marca: "",
+                              id: "",
+                            });
+                            setUsuario("");
+                            setUsuarioId("");
+                          }
+                        }}
+                      />
                     </FormControl>
                   </Grid>
                 </Grid>

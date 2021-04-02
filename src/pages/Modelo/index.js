@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import { CircularIndeterminate } from "../../components/core/Feedback/Progress";
 import Dialog from "../../components/core/Feedback/Dialog";
 import DialogConfirm from "../../components/core/Feedback/DialogConfirm";
@@ -14,12 +10,7 @@ import api from "../../services/api";
 import { retornaObj } from "../../utils/utils";
 import { Container } from "./styles";
 
-const handleColor = (active) => {
-  if (active) return "blue";
-  return "red";
-};
-
-export default function ListagemOperador(props) {
+export default function Modelo(props) {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState({ open: false, text: "" });
   const [modalConfirm, setModalConfirm] = useState({ open: false, text: "" });
@@ -29,80 +20,47 @@ export default function ListagemOperador(props) {
     severity: "success",
     key: 0,
   });
-  const [operador, setOperador] = useState([]);
+  const [modelo, setModelo] = useState([]);
   const [columns, setColumns] = useState([]);
   const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     const init = async () => {
       try {
-        const responseRole = await api.get("/regra");
-        const responseRoleOperador = await api.get("/regra", {
-          params: {
-            name: "OPERADOR",
-          },
-        });
-        const responseOperador = await api.get("/usuario", {
-          params: {
-            role: responseRoleOperador.data.data.id,
-          },
-        });
-        setOperador(responseOperador.data.data);
+        const responseModeloVeiculos = await api.get("/modelo-veiculo");
+        const responseFabricantes = await api.get("/fabricante");
+
         setColumns([
-          { title: "id", field: "id", editable: "never" },
-          { title: "Nome", field: "name" },
-          { title: "email", field: "email", editable: "never" },
-          { title: "celular", field: "phone" },
+          { title: "id", field: "id", title: "Modelo", field: "model" },
           {
-            title: "Regra",
-            field: "roleId",
+            title: "Fabricante",
+            field: "brandId",
             editComponent: (props) => (
-              <Select
-                label="Regra"
-                variant="outlined"
-                value={responseRoleOperador.data.data.id}
-                fullWidth
-                disabled
-              >
-                <MenuItem
-                  key={responseRoleOperador.data.data.id}
-                  value={responseRoleOperador.data.data.id}
-                >
-                  {responseRoleOperador.data.data.name}
-                </MenuItem>
-              </Select>
+              <Autocomplete
+                options={responseFabricantes.data.data}
+                getOptionLabel={(option) => option.name}
+                onChange={(e, newValue) => props.onChange(newValue.id)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Fabricante"
+                    variant="outlined"
+                    required
+                  />
+                )}
+              />
             ),
-            lookup: retornaObj(responseRole.data.data, "id", "name"),
-          },
-          {
-            title: "ativo",
-            field: "active",
-            render: (rowData) => (
-              <Select
-                label="Regra"
-                variant="outlined"
-                value={rowData.active}
-                fullWidth
-                disabled
-              >
-                <MenuItem key={true} value={true}>
-                  Ativo
-                </MenuItem>
-                <MenuItem key={false} value={false}>
-                  Inativo
-                </MenuItem>
-              </Select>
-            ),
-            lookup: { true: "Ativo", false: "Inativo" },
+            lookup: retornaObj(responseFabricantes.data.data, "id", "name"),
           },
         ]);
+        setModelo(responseModeloVeiculos.data.data);
         setLoading(false);
       } catch (error) {
         setModal({
           open: true,
           text:
             error.response?.data?.message ||
-            "Não foi possível carregar os operadores",
+            "Não foi possível carregar os modelos",
           success: false,
         });
         setLoading(false);
@@ -124,29 +82,27 @@ export default function ListagemOperador(props) {
       open: false,
     });
     try {
-      const promisesDeletedFabricante = selected.map(async (row) => {
-        await api.delete(`/usuario/${row.id}`);
+      const promisesDeletedProduto = selected.map(async (row) => {
+        await api.delete(`/modelo-veiculo/${row.id}`);
       });
 
-      Promise.all(await promisesDeletedFabricante)
+      Promise.all(await promisesDeletedProduto)
         .then(() => {
           setAlert({
             key: new Date().getTime(),
             open: true,
-            text: "Operadores excluídos com sucesso!",
+            text: "Modelos excluídos com sucesso!",
             severity: "success",
           });
           setTimeout(() => {
             setLoading(true);
           }, 1000);
         })
-        .catch((error) => {
+        .catch(() => {
           setAlert({
             key: new Date().getTime(),
             open: true,
-            text:
-              error.response?.data?.message ||
-              "Não foi possível excluir os operadores!",
+            text: "Não foi possível excluir os modelos!",
             severity: "error",
           });
         });
@@ -154,9 +110,7 @@ export default function ListagemOperador(props) {
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text:
-          error.response?.data?.message ||
-          "Não foi possível excluir os operadores!",
+        text: "Não foi possível excluir os modelos!",
         severity: "error",
       });
     }
@@ -164,11 +118,11 @@ export default function ListagemOperador(props) {
 
   const handleDelete = async (oldData) => {
     try {
-      const response = await api.delete(`/usuario/${oldData.id}`);
+      const response = await api.delete(`/modelo-veiculo/${oldData.id}`);
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Operador excluído com sucesso!",
+        text: "Modelo de veículo excluído com sucesso!",
         severity: "success",
       });
       setTimeout(() => {
@@ -178,7 +132,32 @@ export default function ListagemOperador(props) {
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: error.response?.data?.message || "Erro ao excluir o operador!",
+        text: "Erro ao excluir o modelo!",
+        severity: "error",
+      });
+    }
+  };
+
+  const handleAdd = async (newData) => {
+    try {
+      const response = await api.post("/modelo-veiculo", {
+        model: newData.model,
+        brandId: newData.brandId,
+      });
+      setAlert({
+        key: new Date().getTime(),
+        open: true,
+        text: "Modelo de veículo criado com sucesso!",
+        severity: "success",
+      });
+      setTimeout(() => {
+        setLoading(true);
+      }, 1000);
+    } catch (error) {
+      setAlert({
+        key: new Date().getTime(),
+        open: true,
+        text: error.response?.data?.message || "Erro ao cadastrar o modelo!",
         severity: "error",
       });
     }
@@ -186,24 +165,23 @@ export default function ListagemOperador(props) {
 
   const handleUpdate = async (newData, oldData) => {
     try {
-      await api.put(`/usuario/${oldData.id}`, {
+      await api.put(`/modelo-veiculo/${oldData.id}`, {
         ...newData,
       });
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: "Operador atualizado com sucesso!",
+        text: "Modelo de veículo atualizado com sucesso!",
         severity: "success",
       });
       setTimeout(() => {
         setLoading(true);
       }, 1000);
     } catch (error) {
-      console.log(error);
       setAlert({
         key: new Date().getTime(),
         open: true,
-        text: error.response?.data?.message || "Erro ao atualizar o operador!",
+        text: error.response?.data?.message || "Erro ao atualizar o modelo!",
         severity: "error",
       });
     }
@@ -216,13 +194,12 @@ export default function ListagemOperador(props) {
       <Grid container spacing={0}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Table
-            title="Listagem de operadores"
+            title="Listagem de modelos de veículos"
             columns={columns}
             isLoading={loading}
-            data={operador}
+            data={modelo}
             handleSelectedDelete={({ rowData }) => handleConfirm(rowData)}
-            editable={false}
-            onRowAdd={null}
+            onRowAdd={({ newData }) => handleAdd(newData)}
             onRowDelete={({ oldData }) => handleDelete(oldData)}
             onRowUpdate={({ newData, oldData }) =>
               handleUpdate(newData, oldData)

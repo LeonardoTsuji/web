@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { format, isBefore, parseISO } from "date-fns";
 
@@ -46,6 +46,7 @@ const handleColor = (status) => {
   if (status === "RECUSADO") return "red";
   else if (status === "PENDENTE") return "orange";
   else if (status === "APROVADO") return "green";
+  else if (status === "FINALIZADO") return "blue";
   return "yellow";
 };
 
@@ -69,9 +70,10 @@ export default function Orcamento({ history }) {
     open: false,
     text: "",
     severity: "success",
+    key: 0,
   });
 
-  const [formaPagamento, setFormaPagamento] = useState("dinheiro");
+  const formaPagamento = useRef("dinheiro");
   const [expiredBudget, setExpiredBudget] = useState({});
 
   const handleDelete = async (rowData) => {
@@ -81,6 +83,7 @@ export default function Orcamento({ history }) {
         open: true,
         text: "Orçamento cancelado com sucesso!",
         severity: "success",
+        key: new Date().getTime(),
       });
       setTimeout(() => {
         setLoading(true);
@@ -93,6 +96,7 @@ export default function Orcamento({ history }) {
         open: true,
         text: "Erro ao cancelar o orçamento!",
         severity: "error",
+        key: new Date().getTime(),
       });
       setModalConfirm({
         open: false,
@@ -101,6 +105,7 @@ export default function Orcamento({ history }) {
   };
 
   const handleAccept = async (rowData, paymentMethod) => {
+    console.log(paymentMethod, "paymentMethod");
     try {
       const response = await api.put(
         `/usuario/${rowData.userId}/orcamento/${rowData.id}`,
@@ -113,6 +118,7 @@ export default function Orcamento({ history }) {
         open: true,
         text: "Orçamento aprovado com sucesso!",
         severity: "success",
+        key: new Date().getTime(),
       });
       setTimeout(() => {
         setLoading(true);
@@ -125,6 +131,7 @@ export default function Orcamento({ history }) {
         open: true,
         text: "Erro ao cancelar o orçamento!",
         severity: "error",
+        key: new Date().getTime(),
       });
       setModalConfirm({
         open: false,
@@ -140,42 +147,51 @@ export default function Orcamento({ history }) {
     });
   };
 
+  const FormaPagamento = () => {
+    const [state, setState] = useState("dinheiro");
+    return (
+      <ContainerModal>
+        Deseja aceitar o orçamento?
+        <Grid item xs={12} sm={12} md={5} lg={5}>
+          <FormControl>
+            <FormLabel component="legend">Forma de pagamento</FormLabel>
+            <RadioGroup
+              name="formaPagamento"
+              value={state}
+              row
+              onChange={(e) => {
+                setState(e.target.value);
+                formaPagamento.current = e.target.value;
+              }}
+            >
+              <FormControlLabel
+                value="dinheiro"
+                control={<Radio />}
+                label="Dinheiro"
+              />
+              <FormControlLabel
+                value="cartaoCredito"
+                control={<Radio />}
+                label="Cartão de crédito"
+              />
+              <FormControlLabel
+                value="cartaoDebito"
+                control={<Radio />}
+                label="Cartão de débito"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+      </ContainerModal>
+    );
+  };
+
   const confirmAccept = (rowData) => {
     setModalConfirm({
       open: true,
-      children: (
-        <ContainerModal>
-          Deseja aceitar o orçamento?
-          <Grid item xs={12} sm={12} md={5} lg={5}>
-            <FormControl>
-              <FormLabel component="legend">Forma de pagamento</FormLabel>
-              <RadioGroup
-                name="formaPagamento"
-                value={formaPagamento}
-                row
-                onChange={(e) => setFormaPagamento(e.target.value)}
-              >
-                <FormControlLabel
-                  value="dinheiro"
-                  control={<Radio />}
-                  label="Dinheiro"
-                />
-                <FormControlLabel
-                  value="cartaoCredito"
-                  control={<Radio />}
-                  label="Cartão de crédito"
-                />
-                <FormControlLabel
-                  value="cartaoDebito"
-                  control={<Radio />}
-                  label="Cartão de débito"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-        </ContainerModal>
-      ),
-      handleClick: async () => await handleAccept(rowData, formaPagamento),
+      children: <FormaPagamento />,
+      handleClick: async () =>
+        await handleAccept(rowData, formaPagamento.current),
     });
   };
 
@@ -220,7 +236,7 @@ export default function Orcamento({ history }) {
           );
 
           setCarro({
-            modelo: response.data.data[0]["vehicle.model"],
+            modelo: response.data.data[0]["vehicle.model.model"],
             placa: response.data.data[0]["vehicle.plate"],
             cor: response.data.data[0]["vehicle.color"],
             quilometragem: response.data.data[0]["vehicle.kilometer"],
@@ -312,16 +328,23 @@ export default function Orcamento({ history }) {
       ) {
         return (
           <>
-            <Tooltip title="Aceitar orçamento">
-              <IconButton onClick={() => confirmAccept(rowData)}>
-                <CheckCircle color="primary" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Recusar">
-              <IconButton onClick={() => confirmDelete(rowData)}>
-                <Delete color="error" />
-              </IconButton>
-            </Tooltip>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => confirmAccept(rowData)}
+              startIcon={<CheckCircle />}
+              style={{ marginRight: 5 }}
+            >
+              Aprovar
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => confirmDelete(rowData)}
+              startIcon={<Delete />}
+            >
+              Recusar
+            </Button>
           </>
         );
       } else {
@@ -417,6 +440,7 @@ export default function Orcamento({ history }) {
             open: true,
             text: "Orçamentos excluídos com sucesso!",
             severity: "success",
+            key: new Date().getTime(),
           });
           setTimeout(() => {
             setLoading(true);
@@ -427,6 +451,7 @@ export default function Orcamento({ history }) {
             open: true,
             text: "Não foi possível excluir os orçamentos!",
             severity: "error",
+            key: new Date().getTime(),
           });
         });
     } catch (err) {
@@ -434,6 +459,7 @@ export default function Orcamento({ history }) {
         open: true,
         text: "Não foi possível excluir os orçamentos!",
         severity: "error",
+        key: new Date().getTime(),
       });
     }
   };
@@ -444,20 +470,6 @@ export default function Orcamento({ history }) {
     <Container>
       <Grid container spacing={0}>
         <Breadcrumb />
-        <Grid item xs={12} sm={12} md={12} lg={12} style={{ padding: 15 }}>
-          <ContainerNovo>
-            <Grid item xs={12} sm={12} md={12} lg={12}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => history.push("/agendar-servico")}
-                startIcon={<Add />}
-              >
-                Solicitar um orçamento
-              </Button>
-            </Grid>
-          </ContainerNovo>
-        </Grid>
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Table
             title="Listagem de orçamento"
@@ -472,6 +484,7 @@ export default function Orcamento({ history }) {
             alertOpen={alert.open}
             alertText={alert.text}
             alertSeverity={alert.severity}
+            key={alert.key}
           />
         </Grid>
       </Grid>

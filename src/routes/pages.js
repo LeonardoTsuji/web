@@ -22,6 +22,7 @@ import ServicosMecanicos from "../pages/ServicosMecanicos";
 import Fabricante from "../pages/Fabricante";
 import Categoria from "../pages/Categoria";
 import Produto from "../pages/Produto";
+import Modelo from "../pages/Modelo";
 import Estatistica from "../pages/Estatistica";
 import Permissoes from "../pages/Permissoes";
 
@@ -49,6 +50,7 @@ export const pages = {
   Fabricante,
   Categoria,
   Produto,
+  Modelo,
   Estatistica,
   Permissoes,
   Page404,
