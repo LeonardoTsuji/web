@@ -105,7 +105,6 @@ export default function Orcamento({ history }) {
   };
 
   const handleAccept = async (rowData, paymentMethod) => {
-    console.log(paymentMethod, "paymentMethod");
     try {
       const response = await api.put(
         `/usuario/${rowData.userId}/orcamento/${rowData.id}`,

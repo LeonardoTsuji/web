@@ -7,7 +7,6 @@ export const ContainerTitle = styled.div`
 export const Container = styled.div`
   width: 100%;
   min-height: 100vh;
-  padding: 15px;
 `;
 
 export const ContainarForm = styled.div`

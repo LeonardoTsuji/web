@@ -271,6 +271,8 @@ export default function ListagemOrcamentoUsuario({ history }) {
 
   const handleAcoes = (rowData) => {
     if (rowData.status === "PENDENTE") {
+      console.log(rowData.expirationDate, "exp");
+      console.log(new Date());
       if (
         isBefore(
           new Date(),

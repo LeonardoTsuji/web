@@ -152,6 +152,7 @@ export default function OrdemServico(props) {
           });
           setUsuario(orcamento.vehicle.user.name);
           setUsuarioId(orcamento.userId);
+          setFormaPagamento(orcamento.paymentMethod);
 
           if (orcamento.products) {
             const promisesProdutos = orcamento.products.map(async (produto) => {
