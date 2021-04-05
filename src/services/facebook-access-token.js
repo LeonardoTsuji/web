@@ -5,9 +5,9 @@ async function getAccessTokenFromCode(code) {
     url: "https://graph.facebook.com/v4.0/oauth/access_token",
     method: "get",
     params: {
-      client_id: process.env.FACEBOOK_ID,
-      client_secret: process.env.FACEBOOK_SECRET,
-      redirect_uri: "http://localhost:3000/auth/facebook/",
+      client_id: process.env.REACT_APP_FACEBOOK_ID,
+      client_secret: process.env.REACT_APP_FACEBOOK_SECRET,
+      redirect_uri: process.env.REACT_APP_FACEBOOK_REDIRECT_URI,
       code,
     },
   });
