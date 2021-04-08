@@ -126,12 +126,16 @@ export default function ListagemAgendamento({ history }) {
           );
 
           setCarro({
-            modelo: response.data.data[0]["vehicle.model.model"],
-            placa: response.data.data[0]["vehicle.plate"],
-            cor: response.data.data[0]["vehicle.color"],
-            quilometragem: response.data.data[0]["vehicle.kilometer"],
-            ano: response.data.data[0]["vehicle.year"],
-            marca: response.data.data[0]["vehicle.brand.name"],
+            modelo:
+              response.data.data &&
+              response.data.data[0]["vehicle.model.model"],
+            placa: response.data.data && response.data.data[0]["vehicle.plate"],
+            cor: response.data.data && response.data.data[0]["vehicle.color"],
+            quilometragem:
+              response.data.data && response.data.data[0]["vehicle.kilometer"],
+            ano: response.data.data && response.data.data[0]["vehicle.year"],
+            marca:
+              response.data.data && response.data.data[0]["vehicle.brand.name"],
           });
         } catch (err) {}
       };

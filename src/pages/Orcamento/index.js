@@ -1,4 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import pt from "date-fns/locale/pt-BR";
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -49,9 +58,10 @@ export default function Orcamento(props) {
   const [fabricanteArray, setFabricanteArray] = useState([]);
   const [categoriaArray, setCategoriaArray] = useState([]);
   const [produtoArray, setProdutoArray] = useState([]);
-  const [fabricante, setFabricante] = useState([]);
-  const [categoria, setCategoria] = useState([]);
-  const [produto, setProduto] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDateFormated, setSelectedDateFormated] = useState(
+    format(new Date(), "yyyy-MM-dd")
+  );
   const [agendamento, setAgendamento] = useState([]);
   const [selectedAgendamento, setSelectedAgendamento] = useState(0);
   const [carro, setCarro] = useState({
@@ -106,7 +116,7 @@ export default function Orcamento(props) {
     event.preventDefault();
     try {
       const response = await api.post("/orcamento", {
-        expirationDate: validade,
+        expirationDate: selectedDateFormated,
         paymentMethod: "",
         amount: totalFinal,
         status: "ATIVO",
@@ -244,6 +254,17 @@ export default function Orcamento(props) {
     setItemsOrcamento(updatedScheduleItems);
   };
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedDateFormated(format(date, "yyyy-MM-dd"));
+  };
+
+  function filterWeekends(date) {
+    // Return false if  Sunday
+
+    return date.getDay() === 0;
+  }
+
   const handleAgenda = (value) => {
     setSelectedAgendamento(value);
 
@@ -374,17 +395,22 @@ export default function Orcamento(props) {
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <TextField
-                      name="validade"
-                      required
-                      label="Validade do orçamento"
-                      variant="outlined"
-                      type="date"
-                      fullWidth
-                      value={validade}
-                      InputLabelProps={{ shrink: true }}
-                      onChange={(e) => setValidade(e.target.value)}
-                    />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={pt}>
+                      <KeyboardDatePicker
+                        disableToolbar
+                        fullWidth
+                        variant="inline"
+                        inputVariant="outlined"
+                        format="dd/MM/yyyy"
+                        label="Validade do orçamento"
+                        value={selectedDate}
+                        minDate={new Date()}
+                        minDateMessage="A data não deve ser anterior à data mínima"
+                        onChange={handleDateChange}
+                        shouldDisableDate={filterWeekends}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </MuiPickersUtilsProvider>
                   </Grid>
                   <Grid item xs={12} sm={12} md={6} lg={6}>
                     <TextField

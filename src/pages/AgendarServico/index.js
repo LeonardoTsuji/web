@@ -68,9 +68,10 @@ export default function Agendamentoservico(props) {
         const responseFabricantes = await api.get("/fabricante");
         const responseVeiculos = await api.get("/modelo-veiculo", {
           params: {
-            brandId: responseFabricantes.data.data[0]
-              ? responseFabricantes.data.data[0].id
-              : 1,
+            brandId:
+              responseFabricantes.data.data && responseFabricantes.data.data[0]
+                ? responseFabricantes.data.data[0].id
+                : 1,
           },
         });
 
@@ -113,7 +114,9 @@ export default function Agendamentoservico(props) {
     setVeiculoArray(responseVeiculos.data.data);
     setSelectedFabricante(value);
     setSelectedVeiculo(
-      responseVeiculos.data.data && responseVeiculos.data.data[0].id
+      responseVeiculos.data.data &&
+        responseVeiculos.data.data.length > 0 &&
+        responseVeiculos.data.data[0].id
     );
   };
 
